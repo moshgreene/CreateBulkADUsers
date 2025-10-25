@@ -20,7 +20,6 @@ int GetRandomVectorIndex(int size);
 bool GetDefaultNamingContext(std::wstring& dnc);
 bool CreateOrgUnitSubtree(std::wstring defaultNamingContext, std::wstring rootOrgUnitName = L"GiganticDIT");
 bool CreateUser(std::wstring organizationalUnit, BSTR firstName, BSTR lastName);
-std::vector<std::wstring>* GetCityStatesVector();
 std::vector<std::wstring>* GetCityStatesOUPathVector(std::wstring rootOU);
 std::wstring CreateOrgUnit(std::wstring name, std::wstring parent);
 bool OUExists(const std::wstring& ouPath);

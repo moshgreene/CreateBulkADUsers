@@ -8,7 +8,7 @@ using namespace std;
 
 int wmain(int argc, wchar_t* argv[])
 {
-    std::cout << "CreateBulkADUsers\n";
+    std::wcout << L"CreateBulkADUsers\n";
 
     HRESULT hr = CoInitialize(NULL);
     if (FAILED(hr)) {
@@ -33,7 +33,7 @@ int wmain(int argc, wchar_t* argv[])
     wstring rootOrgUnit{ L"OU=" + rootOrgUnitName + L"," + defaultNamingContext};
     std::vector<wstring>* cityStatesCollection = GetCityStatesOUPathVector(rootOrgUnit);
 
-    for (;;) {
+    for (int i = 0;;i++) {
         int randomStateIndex = GetRandomVectorIndex(static_cast<int>(g_States.size()));
         int randomFirstNameIndex = GetRandomVectorIndex(static_cast<int>(FirstNameVector->size()));
         int randomSurnamIndex = GetRandomVectorIndex(static_cast<int>(SurnameVector->size()));
@@ -46,7 +46,6 @@ int wmain(int argc, wchar_t* argv[])
         }
     }
 }
-
 
 std::wstring CreateOrgUnit(std::wstring name, std::wstring parent)
 {
@@ -64,8 +63,7 @@ std::wstring CreateOrgUnit(std::wstring name, std::wstring parent)
     wstring parentPath{ L"LDAP://" + parent };
     hr = ADsGetObject(parentPath.c_str(), IID_IADsContainer, (void**)&pContainer);
     if (FAILED(hr)) {
-        std::cerr << "Failed to bind to container." << std::endl;
-        CoUninitialize();
+        std::cerr << "Failed to bind to container." << std::endl;        
         return nullptr;
     }
 
@@ -75,7 +73,6 @@ std::wstring CreateOrgUnit(std::wstring name, std::wstring parent)
     if (FAILED(hr)) {
         std::cerr << "Failed to create OU." << std::endl;
         pContainer->Release();
-        CoUninitialize();
         return nullptr;
     }
 
@@ -90,9 +87,10 @@ std::wstring CreateOrgUnit(std::wstring name, std::wstring parent)
         newOU = bstrNewOU;
         SysFreeString(bstrNewOU);
         if (SUCCEEDED(hr)) {
-            std::wcout << L"OU ]" << name << L"' created successfully under " << parent << std::endl;
+            std::wcout << L"OU=" << name << L"' created successfully under " << parent << std::endl;
         }
         pOU->Release();
+        return newOU;
     }
 
     // Cleanup
@@ -139,33 +137,10 @@ std::vector<CComBSTR>* GetTextVectorFromFile(wstring fileName)
 
 std::vector<wstring>* GetCityStatesOUPathVector(wstring rootOU)
 {
-    std::array<const wstring, 50> States = { L"Alabama", L"Alaska", L"Arizona", L"Arkansas", L"California", L"Colorado", L"Connecticut", L"Delaware", L"Florida",
-                            L"Georgia", L"Hawaii", L"Idaho", L"Illinois", L"Indiana", L"Iowa", L"Kansas", L"Kentucky", L"Louisiana", L"Maine", L"Maryland",
-                            L"Massachusetts", L"Michigan", L"Minnesota", L"Mississippi", L"Missouri", L"Montana", L"Nebraska", L"Nevada", L"New Hampshire",
-                            L"New Jersey", L"New Mexico", L"New York", L"North Carolina", L"North Dakota", L"Ohio", L"Oklahoma", L"Oregon", L"Pennsylvania",
-                            L"Rhode Island", L"South Carolina", L"South Dakota", L"Tennessee", L"Texas", L"Utah", L"Vermont", L"Virginia", L"Washington",
-                            L"West Virginia", L"Wisconsin", L"Wyoming" };
-
-    std::array<const wstring, 10> Cities = { L"Washington", L"Springfield", L"Lexington", L"Clinton", L"Greenville",L"Franklin", L"Madison", L"Salem", L"Georgetown",L"Jackson" };
-    //std::vector<CComBSTR>*pStates = new std::vector<CComBSTR>(States.begin(), States.end());
-
-    std::vector<wstring>* cityState = new std::vector<wstring>();
-    for (const auto& state : States) {
-        for (const auto& city : Cities) {
-            wstring cityStateString{ L"LDAP://OU=" + city + L",OU=" + state + L"," + rootOU };
-            cityState->push_back(cityStateString);
-        }
-    }
-
-    return cityState;
-}
-
-std::vector<wstring>* GetCityStatesVector()
-{
     std::vector<wstring>* cityState = new std::vector<wstring>();
     for (const auto& state : g_States) {
         for (const auto& city : g_Cities) {
-            std::wstring cityStateString{ city + L", " + state };
+            wstring cityStateString{ L"LDAP://OU=" + city + L",OU=" + state + L"," + rootOU };
             cityState->push_back(cityStateString);
         }
     }
