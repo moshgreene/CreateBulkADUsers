@@ -45,6 +45,8 @@ int wmain(int argc, wchar_t* argv[])
             break;
         }
     }
+
+    CoUninitialize();
 }
 
 std::wstring CreateOrgUnit(std::wstring name, std::wstring parent)
