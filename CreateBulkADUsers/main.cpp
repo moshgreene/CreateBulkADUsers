@@ -98,7 +98,11 @@ std::wstring CreateOrgUnit(std::wstring name, std::wstring parent)
     pContainer->Release();
 }
 
-
+/// <summary>
+/// Determines if an OU already exists
+/// </summary>
+/// <param name="ouPath"></param>
+/// <returns></returns>
 bool OUExists(const std::wstring& ouPath) {
     IADs* pOU = nullptr;
     wstring ldapPath{ L"LDAP://" + ouPath };
@@ -118,6 +122,11 @@ bool OUExists(const std::wstring& ouPath) {
     return false;
 }
 
+/// <summary>
+/// This method reads names from a text file and resturns a vector pointer
+/// </summary>
+/// <param name="fileName"></param>
+/// <returns></returns>
 std::vector<CComBSTR>* GetTextVectorFromFile(wstring fileName)
 {
     wifstream file(fileName);
@@ -212,6 +221,11 @@ bool GetDefaultNamingContext(wstring& dnc)
     }
 }
 
+/// <summary>
+/// Returns a random integer less than size
+/// </summary>
+/// <param name="size"></param>
+/// <returns></returns>
 int GetRandomVectorIndex(int size)
 {
     // Set up random number generation
@@ -225,6 +239,12 @@ int GetRandomVectorIndex(int size)
     return randomIndex;
 }
 
+/// <summary>
+/// This method builds the entire OU structure
+/// </summary>
+/// <param name="defaultNamingContext"></param>
+/// <param name="rootOrgUnitName"></param>
+/// <returns></returns>
 bool CreateOrgUnitSubtree(wstring defaultNamingContext, wstring rootOrgUnitName)
 {
     wstring rootOU = CreateOrgUnit(rootOrgUnitName, defaultNamingContext);
