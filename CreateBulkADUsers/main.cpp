@@ -84,15 +84,11 @@ std::wstring CreateOrgUnit(std::wstring name, std::wstring parent)
     wstring newOU;
     if (SUCCEEDED(hr)) {
         hr = pOU->SetInfo(); // Saves the OU
-        BSTR bstrNewOU;
-        pOU->get_ADsPath(&bstrNewOU);
-        newOU = bstrNewOU;
-        SysFreeString(bstrNewOU);
         if (SUCCEEDED(hr)) {
             std::wcout << L"OU=" << name << L"' created successfully under " << parent << std::endl;
         }
         pOU->Release();
-        return newOU;
+        return ouPath;
     }
 
     // Cleanup
