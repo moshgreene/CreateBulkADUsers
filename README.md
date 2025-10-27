@@ -24,4 +24,4 @@ contoso.com
 This utility will randomly creates users in the above OU's. 
 
 ## Prerequisites
-You must install the latest [Microsoft Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)
+You must install the latest [Microsoft Visual C++ Redistributable (X64)](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)
