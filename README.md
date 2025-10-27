@@ -3,7 +3,7 @@ This utility is for testing purposes only.
 
 This utility creates Active Directory users in bulk to simulate large AD databases. It must not be used in production environments.
 It creates 501 OU's using the following OU structure (using the example of contoso.com):
-contoso.com
+
 + GiganticDIT
   + Alabama
     + Clinton
