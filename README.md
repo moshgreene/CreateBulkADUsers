@@ -22,3 +22,6 @@ contoso.com
   + Wyoming
 
 This utility will randomly creates users in the above OU's. 
+
+## Prerequisites
+You must install the latest [Microsoft Visual C++ Runtime](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170)
